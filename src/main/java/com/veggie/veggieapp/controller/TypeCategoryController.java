@@ -19,14 +19,12 @@ public class TypeCategoryController {
         this.typeCategoryService = typeCategoryService;
     }
 
-    // Endpoint para crear un nuevo tipo de categoría
     @PostMapping(consumes = "application/json")
     public ResponseEntity<TypeCategory> createTypeCategory(@RequestBody TypeCategory typeCategory) {
         TypeCategory createdTypeCategory = typeCategoryService.create(typeCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTypeCategory);
     }
 
-    // Endpoint para obtener un tipo de categoría por su ID
     @GetMapping("/{id}")
     public ResponseEntity<TypeCategory> getTypeCategoryById(@PathVariable Integer id) {
         TypeCategory typeCategory = typeCategoryService.getById(id);
@@ -37,19 +35,17 @@ public class TypeCategoryController {
         }
     }
 
-    // Endpoint para obtener todos los tipos de categoría
     @GetMapping
     public ResponseEntity<List<TypeCategory>> getAllTypeCategories() {
         List<TypeCategory> typeCategories = typeCategoryService.getAll();
         return ResponseEntity.ok(typeCategories);
     }
 
-    // Endpoint para actualizar un tipo de categoría existente
     @PutMapping("/{id}")
     public ResponseEntity<TypeCategory> updateTypeCategory(@PathVariable Integer id, @RequestBody TypeCategory typeCategory) {
         TypeCategory existingTypeCategory = typeCategoryService.getById(id);
         if (existingTypeCategory != null) {
-            typeCategory.setId(id); // Asegurarse de que el ID del tipo de categoría sea el mismo que se está actualizando
+            typeCategory.setId(id);
             TypeCategory updatedTypeCategory = typeCategoryService.update(typeCategory);
             return ResponseEntity.ok(updatedTypeCategory);
         } else {
@@ -57,7 +53,6 @@ public class TypeCategoryController {
         }
     }
 
-    // Endpoint para eliminar un tipo de categoría por su ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTypeCategory(@PathVariable Integer id) {
         TypeCategory existingTypeCategory = typeCategoryService.getById(id);

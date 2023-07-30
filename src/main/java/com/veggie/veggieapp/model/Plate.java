@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @Builder
 @Getter
 @Setter

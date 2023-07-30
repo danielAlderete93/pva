@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PlateService extends AbstractCrudService<Plate, Integer> {
-    private final PlateRepository plateRepository;
 
     @Autowired
     public PlateService(PlateRepository plateRepository) {
         super(plateRepository);
-        this.plateRepository = plateRepository;
     }
 
 }

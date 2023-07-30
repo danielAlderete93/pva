@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderItemService extends AbstractCrudService<OrderItem, OrderItemKey> {
-    private final OrderItemRepository orderItemRepository;
 
     @Autowired
     public OrderItemService(OrderItemRepository orderItemRepository) {
         super(orderItemRepository);
-        this.orderItemRepository = orderItemRepository;
     }
 }

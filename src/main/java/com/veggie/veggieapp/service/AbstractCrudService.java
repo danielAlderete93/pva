@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public abstract class AbstractCrudService<T, ID> {
-    private final JpaRepository<T, ID> repository;
+public abstract class AbstractCrudService<T, I> {
+    protected final JpaRepository<T, I> repository;
 
-    public AbstractCrudService(JpaRepository<T, ID> repository) {
+    protected AbstractCrudService(JpaRepository<T, I> repository) {
         this.repository = repository;
     }
 
@@ -15,8 +15,8 @@ public abstract class AbstractCrudService<T, ID> {
         return repository.save(entity);
     }
 
-    public T getById(ID id) {
-        return repository.findById(id).orElse(null);
+    public T getById(I i) {
+        return repository.findById(i).orElse(null);
     }
 
     public List<T> getAll() {
@@ -27,9 +27,8 @@ public abstract class AbstractCrudService<T, ID> {
         return repository.save(entity);
     }
 
-    public void deleteById(ID id) {
-        repository.deleteById(id);
+    public void deleteById(I i) {
+        repository.deleteById(i);
     }
 
-    // Otros métodos específicos del servicio que puedas necesitar
 }

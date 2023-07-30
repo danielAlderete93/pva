@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService extends AbstractCrudService<Order, Integer> {
-    private final OrderRepository orderRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
         super(orderRepository);
-        this.orderRepository = orderRepository;
     }
 
 }

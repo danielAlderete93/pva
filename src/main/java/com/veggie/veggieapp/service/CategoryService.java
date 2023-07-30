@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryService extends AbstractCrudService<Category, Integer> {
-    private CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository) {
         super(categoryRepository);
-        this.categoryRepository = categoryRepository;
     }
 
 }

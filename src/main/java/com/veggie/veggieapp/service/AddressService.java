@@ -7,11 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AddressService extends AbstractCrudService<Address, Integer> {
-    private final AddressRepository addressRepository;
 
     @Autowired
     public AddressService(AddressRepository addressRepository) {
         super(addressRepository);
-        this.addressRepository = addressRepository;
     }
 }

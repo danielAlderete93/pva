@@ -7,11 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService extends AbstractCrudService<User, Integer> {
-    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
         super(userRepository);
-        this.userRepository = userRepository;
     }
 }
