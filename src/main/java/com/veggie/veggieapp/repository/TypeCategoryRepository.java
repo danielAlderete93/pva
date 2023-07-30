@@ -1,0 +1,9 @@
+package com.veggie.veggieapp.repository;
+
+import com.veggie.veggieapp.model.TypeCategory;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TypeCategoryRepository extends JpaRepository<TypeCategory, Integer> {
+}
