@@ -1,22 +1,22 @@
 package com.veggie.veggieapp.mapper;
 
-import com.veggie.veggieapp.dto.category.CategoryDTO;
+import com.veggie.veggieapp.dto.request.category.CategoryRequestDTO;
 import com.veggie.veggieapp.model.Category;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryMapper implements DtoMapper<CategoryDTO, Category> {
+public class CategoryMapper implements DtoMapper<CategoryRequestDTO, Category> {
     @Override
-    public Category toEntity(CategoryDTO categoryDTO) {
+    public Category toEntity(CategoryRequestDTO categoryRequestDTO) {
         return Category.builder()
-                .name(categoryDTO.name())
-                .description(categoryDTO.description())
+                .name(categoryRequestDTO.name())
+                .description(categoryRequestDTO.description())
                 .build();
     }
 
     @Override
-    public CategoryDTO toDTO(Category category) {
-        return new CategoryDTO(
+    public CategoryRequestDTO toDTO(Category category) {
+        return new CategoryRequestDTO(
                 category.getName(),
                 category.getDescription()
         );

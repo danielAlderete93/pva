@@ -1,6 +1,6 @@
 package com.veggie.veggieapp.mapper;
 
-import com.veggie.veggieapp.dto.user.UserDto;
+import com.veggie.veggieapp.dto.request.user.UserDto;
 import com.veggie.veggieapp.model.User;
 import org.springframework.stereotype.Component;
 

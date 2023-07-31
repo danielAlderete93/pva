@@ -22,7 +22,7 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "item_x_order")
-    private List<OrderItem> items;
+    private List<Item> items;
     @ManyToOne
     @JoinColumn(name = "fk_address")
     private Address address;
@@ -30,5 +30,20 @@ public class Order {
     private OrderStatus status;
     @Column
     private Float total;
+
+
+    public void addItem(Item item) {
+        this.items.add(item);
+        this.updateTotal();
+    }
+
+    public void removeItem(Item item) {
+        this.items.remove(item);
+    }
+
+    public void updateTotal() {
+        this.total = this.items.stream().map(Item::getSubtotal).reduce(Float::sum).orElse(0.00f);
+    }
+
 
 }

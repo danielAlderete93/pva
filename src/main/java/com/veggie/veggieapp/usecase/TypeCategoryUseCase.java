@@ -1,21 +1,16 @@
 package com.veggie.veggieapp.usecase;
 
-import com.veggie.veggieapp.dto.category.TypeCategoryDTO;
+import com.veggie.veggieapp.dto.request.category.TypeCategoryRequestDTO;
 import com.veggie.veggieapp.mapper.DtoMapper;
 import com.veggie.veggieapp.model.TypeCategory;
-import com.veggie.veggieapp.service.AbstractCrudService;
+import com.veggie.veggieapp.service.interfaces.AbstractCrudService;
+import com.veggie.veggieapp.usecase.abstracts.AbstractTypeCategoryUseCase;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TypeCategoryUseCase extends AbstractCrudUseCase<TypeCategory, Integer, TypeCategoryDTO> {
-    protected TypeCategoryUseCase(AbstractCrudService<TypeCategory, Integer> service, DtoMapper<TypeCategoryDTO, TypeCategory> mapper) {
-        super(service, mapper);
-    }
+public class TypeCategoryUseCase extends AbstractTypeCategoryUseCase {
 
-    @Override
-    public TypeCategory update(Integer id, TypeCategoryDTO typeCategoryDTO) {
-        TypeCategory typeCategory = mapper.toEntity(typeCategoryDTO);
-        typeCategory.setId(id);
-        return service.update(typeCategory);
+    protected TypeCategoryUseCase(AbstractCrudService<TypeCategory, Integer> service, DtoMapper<TypeCategoryRequestDTO, TypeCategory> mapper) {
+        super(service, mapper);
     }
 }
