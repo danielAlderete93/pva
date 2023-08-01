@@ -1,6 +1,7 @@
 package com.veggie.veggieapp.mapper;
 
-import com.veggie.veggieapp.dto.request.order.ItemRequestDTO;
+import com.veggie.veggieapp.dto.request.ItemRequest;
+import com.veggie.veggieapp.dto.response.ItemResponse;
 import com.veggie.veggieapp.model.Food;
 import com.veggie.veggieapp.model.Item;
 import com.veggie.veggieapp.service.interfaces.AbstractCrudService;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemMapper implements DtoMapper<ItemRequestDTO, Item> {
+public class ItemMapper implements DtoMapper<ItemRequest, Item, ItemResponse> {
 
 
     private final AbstractCrudService<Food, Integer> foodService;
@@ -20,11 +21,11 @@ public class ItemMapper implements DtoMapper<ItemRequestDTO, Item> {
 
 
     @Override
-    public Item toEntity(ItemRequestDTO itemRequestDTO) {
-        Food food = foodService.getById(itemRequestDTO.foodId());
+    public Item toEntity(ItemRequest itemRequest) {
+        Food food = foodService.getById(itemRequest.foodId());
 
 
-        Integer count = itemRequestDTO.count();
+        Integer count = itemRequest.count();
         Float price = food.getPrice();
 
         return Item.builder()
@@ -36,8 +37,13 @@ public class ItemMapper implements DtoMapper<ItemRequestDTO, Item> {
     }
 
     @Override
-    public ItemRequestDTO toDTO(Item item) {
+    public ItemRequest toRequestDTO(Item item) {
         return null;
+    }
+
+    @Override
+    public ItemResponse toResponseDTO(Item item) {
+        return new ItemResponse(item.getFood().getName(), item.getUnitPrice(), item.getCount(), item.getSubtotal());
     }
 
 }

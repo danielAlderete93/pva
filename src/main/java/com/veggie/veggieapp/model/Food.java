@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.util.List;
 
-@SuppressWarnings("ALL")
+
 @Builder
 @Getter
 @Setter
@@ -30,24 +30,30 @@ public class Food {
     private List<Category> categories;
 
 
-    public Boolean hasStockFor(Integer countToOrder) {
-        return stock - countToOrder > 0;
+    public boolean hasStockFor(Integer countToOrder) {
+
+        return (stock - countToOrder) >= 0;
     }
 
-    public void addCategory(Category category) {
+    public Food addCategory(Category category) {
         this.categories.add(category);
+        return this;
     }
 
-    public void removeCategory(Category category) {
+    public Food removeCategory(Category category) {
         this.categories.remove(category);
+        return this;
     }
 
-    public void incrementStock(Integer count) {
+    public Food incrementStock(Integer count) {
         this.stock += count;
+        return this;
     }
 
-    public void decrementStock(Integer count) {
+    public Food decrementStock(Integer count) {
         this.stock -= count;
+        this.stock = Math.max(0, this.stock);
+        return this;
     }
 
 

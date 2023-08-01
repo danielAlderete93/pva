@@ -1,9 +1,11 @@
 package com.veggie.veggieapp.usecase.interfaces;
 
-import com.veggie.veggieapp.dto.request.order.ItemRequestDTO;
-import com.veggie.veggieapp.dto.request.order.OrderRequestDTO;
-import com.veggie.veggieapp.model.Order;
+import com.veggie.veggieapp.dto.request.ItemRequest;
+import com.veggie.veggieapp.dto.request.OrderRequest;
+import com.veggie.veggieapp.dto.response.OrderResponse;
 
-public interface OrderUseCase extends CrudUseCase<Order, Integer, OrderRequestDTO> {
-    Order addItem(ItemRequestDTO itemRequestDTO);
+public interface OrderUseCase extends CrudUseCase<Integer, OrderRequest,OrderResponse> {
+    OrderResponse addItem(ItemRequest itemRequest);
+
+    OrderResponse removeItem(ItemRequest itemRequest);
 }

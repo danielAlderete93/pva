@@ -1,11 +1,11 @@
 package com.veggie.veggieapp.usecase.interfaces;
 
-public interface CrudUseCase<E, K, T> {
-    E create(T t);
+public interface CrudUseCase<K, T, R> {
+    R create(T t);
 
-    E findById(K id);
+    R findById(K id);
 
-    E update(K id, T t);
+    R update(K id, T t);
 
 
     boolean delete(K id);

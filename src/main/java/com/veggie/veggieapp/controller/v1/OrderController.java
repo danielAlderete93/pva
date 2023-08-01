@@ -1,8 +1,8 @@
 package com.veggie.veggieapp.controller.v1;
 
-import com.veggie.veggieapp.dto.request.order.ItemRequestDTO;
-import com.veggie.veggieapp.dto.request.order.OrderRequestDTO;
-import com.veggie.veggieapp.model.Order;
+import com.veggie.veggieapp.dto.request.ItemRequest;
+import com.veggie.veggieapp.dto.request.OrderRequest;
+import com.veggie.veggieapp.dto.response.OrderResponse;
 import com.veggie.veggieapp.usecase.interfaces.OrderUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +21,14 @@ public class OrderController {
 
     //CRUD ENDPOINTS
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
-        Order createdOrder = orderUseCase.create(orderRequestDTO);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequestDTO) {
+        OrderResponse createdOrder = orderUseCase.create(orderRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Integer id) {
-        Order order = orderUseCase.findById(id);
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Integer id) {
+        OrderResponse order = orderUseCase.findById(id);
         if (order != null) {
             return ResponseEntity.ok(order);
         } else {
@@ -38,8 +38,8 @@ public class OrderController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Integer id, @RequestBody OrderRequestDTO order) {
-        Order updatedOrder = orderUseCase.update(id, order);
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable Integer id, @RequestBody OrderRequest order) {
+        OrderResponse updatedOrder = orderUseCase.update(id, order);
         return ResponseEntity.ok(updatedOrder);
 
     }
@@ -56,8 +56,8 @@ public class OrderController {
 
     //ENDPOINTS FUNCTIONAL
     @PostMapping("/add")
-    public ResponseEntity<Order> addItem(@RequestBody ItemRequestDTO itemRequestDTO) {
-        Order order = orderUseCase.addItem(itemRequestDTO);
+    public ResponseEntity<OrderResponse> addItem(@RequestBody ItemRequest itemRequest) {
+        OrderResponse order = orderUseCase.addItem(itemRequest);
         return ResponseEntity.ok(order);
     }
 

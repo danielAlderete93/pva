@@ -24,8 +24,25 @@ public class Item {
     @Column(nullable = false)
     private Float subtotal;
 
-    public void updateSubtotal() {
+    private void updateSubtotal() {
         this.subtotal = this.unitPrice * this.count;
+    }
+
+    public Item incrementCount(Integer count) {
+        this.count += count;
+        this.updateSubtotal();
+        return this;
+    }
+
+    public Item decrementCount(Integer count) {
+        this.count -= count;
+        this.count = Math.max(this.count, 0);
+        this.updateSubtotal();
+        return this;
+    }
+
+    public boolean hasCount() {
+        return this.count > 0;
     }
 
 

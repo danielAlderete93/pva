@@ -32,17 +32,43 @@ public class Order {
     private Float total;
 
 
-    public void addItem(Item item) {
-        this.items.add(item);
-        this.updateTotal();
+    public Order addItem(Item item) {
+        Item itemExisted = this.findItemByFood(item.getFood());
+
+        if (itemExisted == null) {
+            this.items.add(item);
+        } else {
+            itemExisted.incrementCount(item.getCount());
+        }
+
+        return this.updateTotal();
     }
 
-    public void removeItem(Item item) {
-        this.items.remove(item);
+    public Order removeItem(Item item) {
+        Item itemExisted = this.findItemByFood(item.getFood());
+
+        if (itemExisted == null)
+            return this;
+
+        itemExisted.decrementCount(item.getCount());
+
+        if (!itemExisted.hasCount()) {
+            this.items.remove(item);
+        }
+
+        return this.updateTotal();
     }
 
-    public void updateTotal() {
+    public Order updateTotal() {
         this.total = this.items.stream().map(Item::getSubtotal).reduce(Float::sum).orElse(0.00f);
+        return this;
+    }
+
+    private Item findItemByFood(Food food) {
+        return this.items.stream()
+                .filter(item -> item.getFood().equals(food))
+                .findFirst()
+                .orElse(null);
     }
 
 

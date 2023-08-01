@@ -2,31 +2,35 @@ package com.veggie.veggieapp.usecase.abstracts;
 
 import com.veggie.veggieapp.mapper.DtoMapper;
 import com.veggie.veggieapp.service.interfaces.CrudService;
+import com.veggie.veggieapp.usecase.interfaces.CrudUseCase;
 
-public abstract class AbstractCrudUseCase<E, K, T> {
+public abstract class AbstractCrudUseCase<E, K, T, R> implements CrudUseCase<K, T, R> {
     protected final CrudService<E, K> service;
-    protected final DtoMapper<T, E> mapper;
+    protected final DtoMapper<T, E, R> mapper;
 
-    protected AbstractCrudUseCase(CrudService<E, K> service, DtoMapper<T, E> mapper) {
+    protected AbstractCrudUseCase(CrudService<E, K> service, DtoMapper<T, E, R> mapper) {
         this.service = service;
         this.mapper = mapper;
     }
 
-    public E create(T t) {
+    @Override
+    public R create(T t) {
         E e = mapper.toEntity(t);
 
         e = service.create(e);
 
-        return e;
+        return mapper.toResponseDTO(e);
     }
 
-    public E findById(K id) {
-        return service.getById(id);
+    @Override
+    public R findById(K id) {
+        E e = service.getById(id);
+        return mapper.toResponseDTO(e);
     }
 
-    public abstract E update(K id, T t);
 
 
+    @Override
     public boolean delete(K id) {
         E e;
         service.deleteById(id);

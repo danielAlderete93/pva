@@ -1,8 +1,10 @@
 package com.veggie.veggieapp.mapper;
 
-public interface DtoMapper<T, E> {
+public interface DtoMapper<T, E, R> {
     E toEntity(T t);
 
-    T toDTO(E e);
+    T toRequestDTO(E e);
+
+    R toResponseDTO(E e);
 
 }

@@ -1,8 +1,8 @@
 package com.veggie.veggieapp.controller.v1;
 
-import com.veggie.veggieapp.dto.request.category.CategoryRequestDTO;
-import com.veggie.veggieapp.model.Category;
-import com.veggie.veggieapp.usecase.abstracts.AbstractCategoryUseCase;
+import com.veggie.veggieapp.dto.request.CategoryRequest;
+import com.veggie.veggieapp.dto.response.CategoryResponse;
+import com.veggie.veggieapp.usecase.abstracts.AbstractCrudCategoryUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
-    private final AbstractCategoryUseCase categoryUseCase;
+    private final AbstractCrudCategoryUseCase categoryUseCase;
 
     @Autowired
-    public CategoryController(AbstractCategoryUseCase categoryUseCase) {
+    public CategoryController(AbstractCrudCategoryUseCase categoryUseCase) {
         this.categoryUseCase = categoryUseCase;
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) {
-        Category category = categoryUseCase.create(categoryRequestDTO);
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
+        CategoryResponse category = categoryUseCase.create(categoryRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Integer id) {
-        Category category = categoryUseCase.findById(id);
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Integer id) {
+        CategoryResponse category = categoryUseCase.findById(id);
         if (category != null) {
             return ResponseEntity.ok(category);
         } else {
@@ -36,8 +36,8 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Integer id, @RequestBody CategoryRequestDTO categoryRequestDTO) {
-        Category updatedCategory = categoryUseCase.update(id, categoryRequestDTO);
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Integer id, @RequestBody CategoryRequest categoryRequest) {
+        CategoryResponse updatedCategory = categoryUseCase.update(id, categoryRequest);
         return ResponseEntity.ok(updatedCategory);
     }
 

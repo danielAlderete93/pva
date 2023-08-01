@@ -1,8 +1,8 @@
 package com.veggie.veggieapp.controller.v1;
 
-import com.veggie.veggieapp.dto.request.category.TypeCategoryRequestDTO;
-import com.veggie.veggieapp.model.TypeCategory;
-import com.veggie.veggieapp.usecase.abstracts.AbstractTypeCategoryUseCase;
+import com.veggie.veggieapp.dto.request.TypeCategoryRequest;
+import com.veggie.veggieapp.dto.response.TypeCategoryResponse;
+import com.veggie.veggieapp.usecase.abstracts.AbstractCrudTypeCategoryUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,22 +14,22 @@ import java.util.List;
 @RequestMapping("/api/v1/categories/type")
 public class TypeCategoryController {
 
-    private final AbstractTypeCategoryUseCase typeCategoryUseCase;
+    private final AbstractCrudTypeCategoryUseCase typeCategoryUseCase;
 
     @Autowired
-    public TypeCategoryController(AbstractTypeCategoryUseCase typeCategoryUseCase) {
+    public TypeCategoryController(AbstractCrudTypeCategoryUseCase typeCategoryUseCase) {
         this.typeCategoryUseCase = typeCategoryUseCase;
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<TypeCategory> createTypeCategory(@RequestBody TypeCategoryRequestDTO typeCategoryRequestDTO) {
-        TypeCategory createdTypeCategory = typeCategoryUseCase.create(typeCategoryRequestDTO);
+    public ResponseEntity<TypeCategoryResponse> createTypeCategory(@RequestBody TypeCategoryRequest typeCategoryRequest) {
+        TypeCategoryResponse createdTypeCategory = typeCategoryUseCase.create(typeCategoryRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTypeCategory);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TypeCategory> getTypeCategoryById(@PathVariable Integer id) {
-        TypeCategory typeCategory = typeCategoryUseCase.findById(id);
+    public ResponseEntity<TypeCategoryResponse> getTypeCategoryById(@PathVariable Integer id) {
+        TypeCategoryResponse typeCategory = typeCategoryUseCase.findById(id);
         if (typeCategory != null) {
             return ResponseEntity.ok(typeCategory);
         } else {
@@ -38,14 +38,14 @@ public class TypeCategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TypeCategory>> getAllTypeCategories() {
-        List<TypeCategory> typeCategories = typeCategoryUseCase.findAll();
+    public ResponseEntity<List<TypeCategoryResponse>> getAllTypeCategories() {
+        List<TypeCategoryResponse> typeCategories = typeCategoryUseCase.findAll();
         return ResponseEntity.ok(typeCategories);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TypeCategory> updateTypeCategory(@PathVariable Integer id, @RequestBody TypeCategoryRequestDTO typeCategory) {
-        TypeCategory updatedType = typeCategoryUseCase.update(id, typeCategory);
+    public ResponseEntity<TypeCategoryResponse> updateTypeCategory(@PathVariable Integer id, @RequestBody TypeCategoryRequest typeCategory) {
+        TypeCategoryResponse updatedType = typeCategoryUseCase.update(id, typeCategory);
         return ResponseEntity.ok(updatedType);
 
     }

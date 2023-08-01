@@ -6,4 +6,6 @@ import com.veggie.veggieapp.model.Order;
 public interface OrderService extends CrudService<Order, Integer> {
 
     Order addItem(Order order, Item item);
+
+    Order removeItem(Order order, Item item);
 }
