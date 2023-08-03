@@ -2,7 +2,7 @@ package com.veggie.veggieapp.controller.v1;
 
 import com.veggie.veggieapp.dto.request.CategoryRequest;
 import com.veggie.veggieapp.dto.response.CategoryResponse;
-import com.veggie.veggieapp.usecase.abstracts.AbstractCrudCategoryUseCase;
+import com.veggie.veggieapp.usecase.interfaces.CategoryUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
-    private final AbstractCrudCategoryUseCase categoryUseCase;
+    private final CategoryUseCase categoryUseCase;
 
     @Autowired
-    public CategoryController(AbstractCrudCategoryUseCase categoryUseCase) {
+    public CategoryController(CategoryUseCase categoryUseCase) {
         this.categoryUseCase = categoryUseCase;
     }
 

@@ -1,7 +1,7 @@
 package com.veggie.veggieapp.controller.v2;
 
 import com.veggie.veggieapp.model.TypeCategory;
-import com.veggie.veggieapp.service.interfaces.AbstractCrudService;
+import com.veggie.veggieapp.service.abstracts.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -54,7 +53,7 @@ public class TypeCategoryHateoasController {
                     typeCategoryResource.add(linkTo(methodOn(TypeCategoryHateoasController.class).getTypeCategoryById(typeCategory.getId())).withSelfRel());
                     return typeCategoryResource;
                 })
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(typeCategoryResources);
     }
 

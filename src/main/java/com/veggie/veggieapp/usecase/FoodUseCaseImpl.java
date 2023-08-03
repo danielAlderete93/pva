@@ -1,16 +1,20 @@
-package com.veggie.veggieapp.usecase.abstracts;
+package com.veggie.veggieapp.usecase;
 
 import com.veggie.veggieapp.dto.request.FoodRequest;
 import com.veggie.veggieapp.dto.response.FoodResponse;
 import com.veggie.veggieapp.mapper.DtoMapper;
 import com.veggie.veggieapp.model.Food;
-import com.veggie.veggieapp.service.interfaces.AbstractCrudService;
+import com.veggie.veggieapp.service.abstracts.AbstractCrudService;
+import com.veggie.veggieapp.usecase.abstracts.AbstractCrudUseCase;
+import com.veggie.veggieapp.usecase.interfaces.FoodUseCase;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public abstract class AbstractCrudFoodUseCase extends AbstractCrudUseCase<Food, Integer, FoodRequest, FoodResponse> {
+@Component
+public class FoodUseCaseImpl extends AbstractCrudUseCase<Food, Integer, FoodRequest, FoodResponse> implements FoodUseCase {
 
-    protected AbstractCrudFoodUseCase(AbstractCrudService<Food, Integer> service, DtoMapper<FoodRequest, Food, FoodResponse> mapper) {
+    public FoodUseCaseImpl(AbstractCrudService<Food, Integer> service, DtoMapper<FoodRequest, Food, FoodResponse> mapper) {
         super(service, mapper);
     }
 
@@ -19,15 +23,16 @@ public abstract class AbstractCrudFoodUseCase extends AbstractCrudUseCase<Food, 
         Food food = mapper.toEntity(foodRequest);
         food.setId(id);
         food = service.update(food);
+
         return mapper.toResponseDTO(food);
     }
 
+    @Override
     public List<FoodResponse> findAll() {
-        return service.getAll().stream()
+        List<Food> foods = service.getAll();
+        return foods.stream()
                 .map(mapper::toResponseDTO)
                 .toList()
                 ;
     }
-
-
 }

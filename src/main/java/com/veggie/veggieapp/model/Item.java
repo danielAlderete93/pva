@@ -1,5 +1,6 @@
 package com.veggie.veggieapp.model;
 
+import com.veggie.veggieapp.exceptions.InvalidQuantityException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,37 +15,64 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_food", referencedColumnName = "id")
     private Food food;
     @Column(name = "unit_price", nullable = false)
     private Float unitPrice;
     @Column(nullable = false)
-    private Integer count;
+    private Integer quantity;
     @Column(nullable = false)
     private Float subtotal;
 
+
+    public void incrementQuantity(Integer quantity) {
+        validateFoodHasStock(this.quantity + quantity);
+
+        this.quantity += quantity;
+        this.food.reduceStock(quantity);
+
+
+        this.updateSubtotal();
+    }
+
+
+    public void reduceQuantity(Integer quantity) {
+        validateReduceQuantity(this.quantity - quantity);
+        this.quantity -= quantity;
+        this.food.incrementStock(quantity);
+
+        this.updateSubtotal();
+    }
+
+
+    public void reduceFoodStock() {
+        food.reduceStock(quantity);
+    }
+
+    public void increaseFoodStock() {
+        food.incrementStock(quantity);
+    }
+
+    public boolean hasQuantity() {
+        return this.quantity > 0;
+    }
+
     private void updateSubtotal() {
-        this.subtotal = this.unitPrice * this.count;
+        this.subtotal = this.unitPrice * this.quantity;
     }
 
-    public Item incrementCount(Integer count) {
-        this.count += count;
-        this.updateSubtotal();
-        return this;
+    private void validateFoodHasStock(Integer quantity) {
+        if (!food.hasStockFor(quantity)) {
+            throw new InvalidQuantityException("Insufficient stock for the requested quantity.");
+        }
     }
 
-    public Item decrementCount(Integer count) {
-        this.count -= count;
-        this.count = Math.max(this.count, 0);
-        this.updateSubtotal();
-        return this;
+    private void validateReduceQuantity(Integer quantity) {
+        if (quantity < 0) {
+            throw new InvalidQuantityException("The resulting quantity would be negative.");
+        }
     }
-
-    public boolean hasCount() {
-        return this.count > 0;
-    }
-
 
 }
 

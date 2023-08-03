@@ -2,7 +2,7 @@ package com.veggie.veggieapp.controller.v1;
 
 import com.veggie.veggieapp.dto.request.TypeCategoryRequest;
 import com.veggie.veggieapp.dto.response.TypeCategoryResponse;
-import com.veggie.veggieapp.usecase.abstracts.AbstractCrudTypeCategoryUseCase;
+import com.veggie.veggieapp.usecase.interfaces.TypeCategoryUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,11 @@ import java.util.List;
 @RequestMapping("/api/v1/categories/type")
 public class TypeCategoryController {
 
-    private final AbstractCrudTypeCategoryUseCase typeCategoryUseCase;
+    private final TypeCategoryUseCase typeCategoryUseCase;
+
 
     @Autowired
-    public TypeCategoryController(AbstractCrudTypeCategoryUseCase typeCategoryUseCase) {
+    public TypeCategoryController(TypeCategoryUseCase typeCategoryUseCase) {
         this.typeCategoryUseCase = typeCategoryUseCase;
     }
 

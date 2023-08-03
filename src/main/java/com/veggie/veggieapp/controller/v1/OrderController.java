@@ -1,6 +1,5 @@
 package com.veggie.veggieapp.controller.v1;
 
-import com.veggie.veggieapp.dto.request.ItemRequest;
 import com.veggie.veggieapp.dto.request.OrderRequest;
 import com.veggie.veggieapp.dto.response.OrderResponse;
 import com.veggie.veggieapp.usecase.interfaces.OrderUseCase;
@@ -55,9 +54,27 @@ public class OrderController {
     }
 
     //ENDPOINTS FUNCTIONAL
-    @PostMapping("/add")
-    public ResponseEntity<OrderResponse> addItem(@RequestBody ItemRequest itemRequest) {
-        OrderResponse order = orderUseCase.addItem(itemRequest);
+    @PostMapping("{orderId}/add/{foodId}/")
+    public ResponseEntity<OrderResponse> addItem(@PathVariable Integer orderId, @PathVariable Integer foodId, @RequestParam int quantity) {
+        OrderResponse order = orderUseCase.addItemToOrder(orderId, foodId, quantity);
+        return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("{orderId}/remove/{foodId}")
+    public ResponseEntity<OrderResponse> removeItem(@PathVariable Integer orderId, @PathVariable Integer foodId) {
+        OrderResponse order = orderUseCase.removeItemFromOrder(orderId, foodId);
+        return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/{orderId}/items/{foodId}/increase-quantity")
+    public ResponseEntity<OrderResponse> addQuantityToItemInOrder(@PathVariable Integer orderId, @PathVariable Integer foodId, @RequestParam int quantity) {
+        OrderResponse order = orderUseCase.incrementQuantityInOrder(orderId, foodId, quantity);
+        return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/{orderId}/items/{itemId}/reduce-quantity")
+    public ResponseEntity<OrderResponse> reduceQuantityToItemInOrder(@PathVariable Integer orderId, @PathVariable Integer itemId, @RequestParam int quantity) {
+        OrderResponse order = orderUseCase.reduceQuantityInOrder(orderId, itemId, quantity);
         return ResponseEntity.ok(order);
     }
 

@@ -45,15 +45,13 @@ public class Food {
         return this;
     }
 
-    public Food incrementStock(Integer count) {
+    public void incrementStock(Integer count) {
         this.stock += count;
-        return this;
     }
 
-    public Food decrementStock(Integer count) {
+    public void reduceStock(Integer count) {
         this.stock -= count;
         this.stock = Math.max(0, this.stock);
-        return this;
     }
 
 

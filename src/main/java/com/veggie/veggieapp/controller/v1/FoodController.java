@@ -2,8 +2,7 @@ package com.veggie.veggieapp.controller.v1;
 
 import com.veggie.veggieapp.dto.request.FoodRequest;
 import com.veggie.veggieapp.dto.response.FoodResponse;
-import com.veggie.veggieapp.usecase.abstracts.AbstractCrudFoodUseCase;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.veggie.veggieapp.usecase.interfaces.FoodUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/food")
-public class PlateController {
-    private final AbstractCrudFoodUseCase foodUseCase;
+public class FoodController {
+    private final FoodUseCase foodUseCase;
 
-    @Autowired
-    public PlateController(AbstractCrudFoodUseCase foodUseCase) {
+    public FoodController(FoodUseCase foodUseCase) {
         this.foodUseCase = foodUseCase;
     }
 

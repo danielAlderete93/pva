@@ -1,7 +1,7 @@
 package com.veggie.veggieapp.controller.v2;
 
 import com.veggie.veggieapp.model.Food;
-import com.veggie.veggieapp.service.FoodService;
+import com.veggie.veggieapp.service.interfaces.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

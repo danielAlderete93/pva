@@ -1,17 +1,20 @@
-package com.veggie.veggieapp.usecase.abstracts;
+package com.veggie.veggieapp.usecase;
 
 import com.veggie.veggieapp.dto.request.TypeCategoryRequest;
 import com.veggie.veggieapp.dto.response.TypeCategoryResponse;
 import com.veggie.veggieapp.mapper.DtoMapper;
 import com.veggie.veggieapp.model.TypeCategory;
-import com.veggie.veggieapp.service.interfaces.AbstractCrudService;
+import com.veggie.veggieapp.service.abstracts.AbstractCrudService;
+import com.veggie.veggieapp.usecase.abstracts.AbstractCrudUseCase;
+import com.veggie.veggieapp.usecase.interfaces.TypeCategoryUseCase;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public abstract class AbstractCrudTypeCategoryUseCase extends AbstractCrudUseCase<TypeCategory, Integer, TypeCategoryRequest, TypeCategoryResponse> {
+@Component
+public class TypeCategoryUseCaseImpl extends AbstractCrudUseCase<TypeCategory, Integer, TypeCategoryRequest, TypeCategoryResponse> implements TypeCategoryUseCase {
 
-
-    protected AbstractCrudTypeCategoryUseCase(AbstractCrudService<TypeCategory, Integer> service, DtoMapper<TypeCategoryRequest, TypeCategory, TypeCategoryResponse> mapper) {
+    public TypeCategoryUseCaseImpl(AbstractCrudService<TypeCategory, Integer> service, DtoMapper<TypeCategoryRequest, TypeCategory, TypeCategoryResponse> mapper) {
         super(service, mapper);
     }
 
@@ -23,6 +26,7 @@ public abstract class AbstractCrudTypeCategoryUseCase extends AbstractCrudUseCas
         return mapper.toResponseDTO(typeCategory);
     }
 
+    @Override
     public List<TypeCategoryResponse> findAll() {
         return service.getAll().stream()
                 .map(mapper::toResponseDTO)

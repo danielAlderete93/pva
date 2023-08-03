@@ -1,5 +1,8 @@
 package com.veggie.veggieapp.model;
 
+import com.veggie.veggieapp.exceptions.DuplicateFoodOrderException;
+import com.veggie.veggieapp.exceptions.FoodNotOrderedException;
+import com.veggie.veggieapp.exceptions.InvalidOrderStateException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,49 +29,95 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "fk_address")
     private Address address;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     @Column
     private Float total;
 
+    public void addItem(Food food, Integer quantity) {
+        validateOrderCanBeUpdated();
+        validateFoodNotOrdered(food);
 
-    public Order addItem(Item item) {
-        Item itemExisted = this.findItemByFood(item.getFood());
 
-        if (itemExisted == null) {
-            this.items.add(item);
-        } else {
-            itemExisted.incrementCount(item.getCount());
-        }
-
-        return this.updateTotal();
+        Item item = createItem(food, quantity);
+        this.items.add(item);
+        item.reduceFoodStock();
+        updateTotal();
     }
 
-    public Order removeItem(Item item) {
-        Item itemExisted = this.findItemByFood(item.getFood());
+    public void removeItem(Food food) {
+        validateOrderCanBeUpdated();
 
-        if (itemExisted == null)
-            return this;
+        Item itemOrdered = this.findItemByFood(food);
 
-        itemExisted.decrementCount(item.getCount());
-
-        if (!itemExisted.hasCount()) {
-            this.items.remove(item);
-        }
-
-        return this.updateTotal();
+        this.items.remove(itemOrdered);
+        itemOrdered.increaseFoodStock();
+        updateTotal();
     }
 
-    public Order updateTotal() {
-        this.total = this.items.stream().map(Item::getSubtotal).reduce(Float::sum).orElse(0.00f);
-        return this;
+    public void increaseQuantityForItem(Food food, Integer quantity) {
+        validateOrderCanBeUpdated();
+
+        Item itemToIncrease = this.findItemByFood(food);
+        itemToIncrease.incrementQuantity(quantity);
+        updateTotal();
+    }
+
+    public void reduceQuantityForItem(Food food, Integer quantity) {
+        validateOrderCanBeUpdated();
+
+        Item itemToReduce = this.findItemByFood(food);
+        itemToReduce.reduceQuantity(quantity);
+
+        if (!itemToReduce.hasQuantity()) {
+            this.items.remove(itemToReduce);
+        }
+        updateTotal();
+    }
+
+    private void updateTotal() {
+        this.total = this.items.stream()
+                .map(Item::getSubtotal)
+                .reduce(Float::sum)
+                .orElse(0.00f)
+        ;
+    }
+
+    public boolean hasOrderedFood(Food food) {
+        return this.items.stream().anyMatch(item -> item.getFood().equals(food));
+    }
+
+    public boolean itemsCanBeUpdated() {
+        return this.getStatus() == OrderStatus.READY_TO_ORDER || this.getStatus() == OrderStatus.READY_TO_PAY;
+    }
+
+    private void validateOrderCanBeUpdated() {
+        if (!itemsCanBeUpdated()) {
+            throw new InvalidOrderStateException("The order cannot be updated because its current state does not allow modifications. Only orders with 'ReadyToOrder' or 'ReadyToPay' status can be updated.");
+        }
     }
 
     private Item findItemByFood(Food food) {
         return this.items.stream()
                 .filter(item -> item.getFood().equals(food))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new FoodNotOrderedException("The food item has not been ordered."));
+    }
+
+
+    private void validateFoodNotOrdered(Food food) {
+        if (hasOrderedFood(food)) {
+            throw new DuplicateFoodOrderException("The food item has already been ordered.");
+        }
+    }
+
+    private Item createItem(Food food, Integer quantity) {
+        return Item.builder()
+                .food(food)
+                .unitPrice(food.getPrice())
+                .quantity(quantity)
+                .subtotal(food.getPrice() * quantity)
+                .build();
     }
 
 

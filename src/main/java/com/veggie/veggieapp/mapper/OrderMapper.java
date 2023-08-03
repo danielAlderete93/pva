@@ -5,7 +5,7 @@ import com.veggie.veggieapp.dto.request.OrderRequest;
 import com.veggie.veggieapp.dto.response.ItemResponse;
 import com.veggie.veggieapp.dto.response.OrderResponse;
 import com.veggie.veggieapp.model.*;
-import com.veggie.veggieapp.service.interfaces.AbstractCrudService;
+import com.veggie.veggieapp.service.abstracts.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
