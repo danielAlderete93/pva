@@ -19,7 +19,8 @@ public class CategoryMapper implements DtoMapper<CategoryRequest, Category, Cate
     public CategoryRequest toRequestDTO(Category category) {
         return new CategoryRequest(
                 category.getName(),
-                category.getDescription()
+                category.getDescription(),
+                null//TODO: MAKE IMPLEMENTATION
         );
     }
 
